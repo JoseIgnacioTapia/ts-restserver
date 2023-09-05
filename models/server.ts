@@ -5,6 +5,8 @@ import cors from "cors";
 
 import sequelize from "../db/connection";
 
+import "./usuario";
+
 class Server {
   private app: Application;
   private port: string;
@@ -26,6 +28,7 @@ class Server {
   async dbConnection() {
     try {
       await sequelize.authenticate();
+      await sequelize.sync({ force: true });
       console.log("Database online");
     } catch (error) {
       if (typeof error === "string" || typeof error === "undefined") {

@@ -17,6 +17,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const usuario_1 = __importDefault(require("../routes/usuario"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
+require("./usuario");
 class Server {
     constructor() {
         this.apiPaths = {
@@ -34,6 +35,7 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield connection_1.default.authenticate();
+                yield connection_1.default.sync({ force: true });
                 console.log("Database online");
             }
             catch (error) {
