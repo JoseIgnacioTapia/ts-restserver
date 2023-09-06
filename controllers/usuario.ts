@@ -3,7 +3,12 @@ import Usuario from "../models/usuario";
 
 export const getUsuarios = async (req: Request, res: Response) => {
   try {
-    const usuarios = await Usuario.findAll();
+    const usuarios = await Usuario.findAll({
+      where: {
+        estado: true,
+      },
+    });
+
     res.json({ usuarios });
   } catch (error) {
     console.log(error);
@@ -80,11 +85,28 @@ export const putUsuario = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteUsuario = (req: Request, res: Response) => {
+export const deleteUsuario = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  res.json({
-    msg: "deleteUsuario",
-    id,
-  });
+  try {
+    const usuario = await Usuario.findByPk(id);
+    if (!usuario) {
+      return res.status(404).json({
+        msg: "No existe un usuario con el id " + id,
+      });
+    }
+
+    // await usuario.destroy();
+
+    await usuario.update({ estado: false });
+
+    res.json(usuario);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Hable con el administrador",
+    });
+  }
+
+  res.json();
 };

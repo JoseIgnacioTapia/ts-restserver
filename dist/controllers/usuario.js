@@ -16,7 +16,11 @@ exports.deleteUsuario = exports.putUsuario = exports.postUsuario = exports.getUs
 const usuario_1 = __importDefault(require("../models/usuario"));
 const getUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const usuarios = yield usuario_1.default.findAll();
+        const usuarios = yield usuario_1.default.findAll({
+            where: {
+                estado: true,
+            },
+        });
         res.json({ usuarios });
     }
     catch (error) {
@@ -87,12 +91,26 @@ const putUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.putUsuario = putUsuario;
-const deleteUsuario = (req, res) => {
+const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    res.json({
-        msg: "deleteUsuario",
-        id,
-    });
-};
+    try {
+        const usuario = yield usuario_1.default.findByPk(id);
+        if (!usuario) {
+            return res.status(404).json({
+                msg: "No existe un usuario con el id " + id,
+            });
+        }
+        // await usuario.destroy();
+        yield usuario.update({ estado: false });
+        res.json(usuario);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Hable con el administrador",
+        });
+    }
+    res.json();
+});
 exports.deleteUsuario = deleteUsuario;
 //# sourceMappingURL=usuario.js.map
