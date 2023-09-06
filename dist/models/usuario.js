@@ -13,12 +13,15 @@ const Usuario = connection_1.default.define("Usuario", {
     },
     nombre: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
     },
     email: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
     },
     estado: {
         type: sequelize_1.DataTypes.BOOLEAN,
+        // defaultValue: true,
     },
 }, {
     timestamps: false,

@@ -9,6 +9,7 @@ import {
 
 const router = Router();
 
+// TODO: validations
 router.get("/", getUsuarios);
 router.get("/:id", getUsuario);
 router.post("/", postUsuario);
